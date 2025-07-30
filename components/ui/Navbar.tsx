@@ -10,7 +10,6 @@ import { cn } from '../../lib/utils';
 
 const originalSuperCategories = Array.from(new Set(TOOLS.map(t => t.superCategory)));
 
-
 // --- Desktop Sidebar ---
 const DesktopSidebar: React.FC = () => {
     const [isHovered, setIsHovered] = useState(false);
@@ -101,7 +100,6 @@ const DesktopSidebar: React.FC = () => {
                          </motion.div>
                     )}
                 </nav>
-
             </div>
         </motion.aside>
     );

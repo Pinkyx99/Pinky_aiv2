@@ -1,9 +1,4 @@
 
-
-
-
-
-
 import React, { useState, useEffect, useRef } from 'react';
 import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
@@ -166,9 +161,9 @@ const MainAppLayout = () => {
 function App() {
   return (
     <HashRouter>
-      <SpotlightEffect>
-          <MainAppLayout />
-      </SpotlightEffect>
+        <SpotlightEffect>
+            <MainAppLayout />
+        </SpotlightEffect>
     </HashRouter>
   );
 }
