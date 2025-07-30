@@ -1,6 +1,18 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+let ai: GoogleGenAI | undefined;
+
+const getAiClient = (): GoogleGenAI => {
+    if (!process.env.API_KEY) {
+        throw new Error("The AI service is not configured for this environment. An API key is required.");
+    }
+
+    if (!ai) {
+        ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    }
+    return ai;
+};
+
 
 /**
  * Enhances a user's prompt for better image generation results.
@@ -9,9 +21,10 @@ const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
  */
 export const enhancePrompt = async (prompt: string): Promise<string> => {
     try {
+        const aiClient = getAiClient();
         const systemInstruction = "You are a creative assistant that expands and enriches user prompts for an AI image generator. Given a user's idea, elaborate on it with vivid details, cinematic lighting, and a specific art style to create a more compelling and visually interesting prompt. Respond only with the enhanced prompt text, without any preamble or explanation.";
 
-        const response = await ai.models.generateContent({
+        const response = await aiClient.models.generateContent({
             model: 'gemini-2.5-flash',
             contents: `Enhance this prompt: "${prompt}"`,
             config: {
@@ -42,7 +55,8 @@ export const enhancePrompt = async (prompt: string): Promise<string> => {
  */
 export const generateImages = async (prompt: string, numberOfImages: number = 1): Promise<string[]> => {
     try {
-        const response = await ai.models.generateImages({
+        const aiClient = getAiClient();
+        const response = await aiClient.models.generateImages({
             model: 'imagen-3.0-generate-002',
             prompt: prompt,
             config: {
